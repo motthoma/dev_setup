@@ -1,0 +1,28 @@
+- name: Install Neovim 
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: clone neovim (shallow)
+      ansible.builtin.git:
+        repo: https://github.com/neovim/neovim.git
+        dest: "{{ lookup('ansible.builtin.env', 'HOME') }}/personal/neovim"
+        version: v0.10.1
+        depth: 1   # <<-- shallow clone, fast like your manual test
+    - name: Neovim Deps
+      become: true # allow sudo apt install if flag -K is used
+      ansible.builtin.apt:
+        pkg:
+        - cmake
+        - gettext
+        - lua5.1
+        - liblua5.1-0-dev
+    - name: neovim
+      make:
+        chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/personal/neovim"
+        params:
+          CMAKE_BUILD_TYPE: "RelWithDebInfo"
+    - name: neovim
+      become: true
+      make:
+        chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/personal/neovim"
+        target: install
