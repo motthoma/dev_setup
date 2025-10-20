@@ -1,0 +1,7 @@
+#"/usr/bin/env bash
+git clone -b v0.11.04 https://github.com/neovim/neovim.git $HOME/thomas/workspace_thomas/Devsetup_Frontendmasters/Part_1_Environment/neovim
+sudo apt install cmake gettext lua5.1 liblua5.1-0-dev nodejs npm -y
+
+cd $HOME/thomas/workspace_thomas/Devsetup_Frontendmasters/Part_1_Environment/neovim
+make CMAKE_BUILD_TYPE
+sudo make install
