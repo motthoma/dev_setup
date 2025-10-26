@@ -16,12 +16,9 @@ This repository contains a collection of **environment setup scripts, configurat
 
 It is based on *The Primeagen’s* course on [Frontend Masters](https://frontendmasters.com/), which focuses on practical tools, terminal mastery, automation, and editor customization.
 
-### 💪 Includes setups for:
+###  Includes setups for:
 - 🧩 **Neovim** — modern Vim-based text editor  
 - 🖥️ **Tmux** — terminal multiplexer for managing sessions  
-- ⚙️ **Ansible** — automated provisioning of your development environment  
-- 🧰 **Bash** and Unix utilities for workflow automation  
-- 🗒️ **Transcripts and examples** from the course for reference  
 
 ---
 
@@ -39,9 +36,9 @@ cd dev-setup/dev-env
 ```
 ### 2. Run setup scripts 
 
-### 2.1 Neovim
+### 2.1 🧩 Neovim
 
-Run Neovim setup via shell script to clone [neovim kickstart fork](https://github.com/motthoma/kickstart.nvim) that contains custom init.lua file.
+Run neovim setup via shell script to clone [neovim kickstart fork](https://github.com/motthoma/kickstart.nvim) that contains custom init.lua file:
 
 ```bash
 cd neovim
@@ -55,9 +52,9 @@ chmod +x neovim.sh
 ansible-playbook neovim_ansible.yml
 ```
 
-### 2.2 tmux 
+### 2.2 🖥️ Tmux 
 
-Run tmux install config as shell script to install tmux and create symlink to .tmux.conf
+Run tmux install config as shell script to install tmux and create symlink to .tmux.conf:
 ```bash
 cd tmux
 chmod +x install_tmux_config.sh
