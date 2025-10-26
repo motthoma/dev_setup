@@ -57,7 +57,8 @@ ansible-playbook neovim_ansible.yml
 
 ## 2.2 tmux 
 
-
 ```bash
 cd tmux
+chmod +x install_tmux_config.sh
+./chmod +x install_tmux_config.sh
 ```
