@@ -74,12 +74,12 @@ chmod +x update_vim_config.sh
 The *update_vim_config.sh* installs the plugins according to the following instructions:
 
 
-Setup instruction for installation of vim plugins
+#### Setup instruction for installation of vim plugins
 
 
 -ensure with vim --version that 8.2 or newer is installed
 
--copy dot_vimrc.txt to home and rename it:
+- copy dot_vimrc.txt to home and rename it:
 ```bash
  cp -r dot_vimrc.txt ~/.vimrc
 ```
@@ -89,9 +89,9 @@ Setup instruction for installation of vim plugins
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
--open .vimrc with vim and run :source %
+- open .vimrc with vim and run :source %
 
--install exuberant ctags for Tagbars:
+- install exuberant ctags for Tagbars:
 ```bash
  sudo apt install exuberant-ctags
 ```
@@ -102,14 +102,16 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   git clone --depth 1 https://github.com/dense-analysis/ale.git ~/.vim/pack/git-plugins/start/ale
 ```
 
-- open vim and run :PluginInstall
+- open vim and run *:PluginInstall*
 
 - install LSP Server:
-  if venv is not yet installed do sudo apt install python3.10-venv
-  open a python script in vim and run :LspInstallServer
+  if venv is not yet installed do 
+```bash
+  sudo apt install python3.10-venv
+```
+  open a python script in vim and run *:LspInstallServer*
 
-YouComplete (not needed if LSP server is used):
--install YouComplete:
+- install YouComplete (not needed if LSP server is used):
 ```bash
  cd ~/.vim/bundle/YouCompleteMe
  python3 install.py
