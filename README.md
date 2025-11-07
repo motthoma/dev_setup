@@ -36,9 +36,9 @@ cd dev-setup/dev-env
 ```
 ### 2. Run setup scripts 
 
-### 2.1 🧩 Neovim
+### 2.1 Neovim
 
-Clone, build and install neovim release 0.11.0 by execution of the neovim.sh script: 
+Clone, build and install neovim release 0.11.0 by execution of the *neovim.sh* script: 
 
 ```bash
 cd neovim
@@ -60,9 +60,19 @@ chmod +x update_nvim_config_from_kickstart.sh
 ./update_nvim_config_from_kickstart.sh
 ```
 
-### 2.2 🖥️ Tmux 
+### 2.2 Vim
 
-Run tmux install config as shell script to install tmux and create symlink to .tmux.conf:
+Execute *update_vim_config.sh* script to install vim (if not yet installed), copy *.vimrc* from /dev-env/vim to home and install all plugins.
+
+```bash
+cd vim
+chmod +x update_vim_config.sh
+./update_vim_config.sh
+```
+
+### 2.2 Tmux 
+
+Run tmux install config as shell script to install tmux and create symlink to *.tmux.conf*:
 
 ```bash
 cd tmux
