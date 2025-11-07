@@ -74,22 +74,26 @@ chmod +x update_vim_config.sh
 The *update_vim_config.sh* installs the plugins according to the following instructions:
 
 
-#### Setup instruction for installation of vim plugins
+#### Setup instructions for installation of vim plugins with vundle plugin manager
 
 
--ensure with vim --version that 8.2 or newer is installed
+- ensure with 
+```bash
+ vim --version
+```
+  that 8.2 or newer is installed
 
-- copy dot_vimrc.txt to home and rename it:
+- copy *dot_vimrc.txt* to home and rename it:
 ```bash
  cp -r dot_vimrc.txt ~/.vimrc
 ```
 
 - clone vundle plugin manager:
 ```bash
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
-- open .vimrc with vim and run :source %
+- open *.vimrc* with vim and run *:source %*
 
 - install exuberant ctags for Tagbars:
 ```bash
@@ -98,8 +102,8 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 - clone ale code analysis tool:
 ```bash
-  mkdir -p ~/.vim/pack/git-plugins/start
-  git clone --depth 1 https://github.com/dense-analysis/ale.git ~/.vim/pack/git-plugins/start/ale
+ mkdir -p ~/.vim/pack/git-plugins/start
+ git clone --depth 1 https://github.com/dense-analysis/ale.git ~/.vim/pack/git-plugins/start/ale
 ```
 
 - open vim and run *:PluginInstall*
@@ -107,9 +111,9 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 - install LSP Server:
   if venv is not yet installed do 
 ```bash
-  sudo apt install python3.10-venv
+ sudo apt install python3.10-venv
 ```
-  open a python script in vim and run *:LspInstallServer*
+- open a python script in vim and run *:LspInstallServer*
 
 - install YouComplete (not needed if LSP server is used):
 ```bash
