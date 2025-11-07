@@ -1,4 +1,4 @@
-# ⚡ Developer Productivity Environment Setup
+# Developer Environment Setup
 
 [![Frontend Masters](https://img.shields.io/badge/Frontend%20Masters-Developer%20Productivity%20v2-red?logo=frontendmasters&logoColor=white)](https://frontendmasters.com/courses/developer-productivity-v2/)
 [![Built with Bash](https://img.shields.io/badge/Bash-4.x-blue?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
@@ -17,8 +17,9 @@ This repository contains a collection of **environment setup scripts, configurat
 It is based on *The Primeagen’s* course on [Frontend Masters](https://frontendmasters.com/), which focuses on practical tools, terminal mastery, automation, and editor customization.
 
 ###  Includes setups for:
-- 🧩 **Neovim** — modern Vim-based text editor  
-- 🖥️ **Tmux** — terminal multiplexer for managing sessions  
+-  **Neovim**  
+-  **Vim**  
+-  **Tmux**  
 
 ---
 
@@ -68,6 +69,42 @@ Execute *update_vim_config.sh* script to install vim (if not yet installed), cop
 cd vim
 chmod +x update_vim_config.sh
 ./update_vim_config.sh
+```
+
+The *update_vim_config.sh* installs the plugins according to the following instructions:
+
+
+```bash
+Setup instruction for installation of vim plugins
+
+
+-ensure with vim --version that 8.2 or newer is installed
+
+-copy dot_vimrc.txt to home and rename it:
+ cp -r dot_vimrc.txt ~/.vimrc
+
+- clone vundle plugin manager:
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+-open .vimrc with vim and run :source %
+
+-install exuberant ctags for Tagbars:
+ sudo apt install exuberant-ctags
+
+- clone ale code analysis tool:
+  mkdir -p ~/.vim/pack/git-plugins/start
+  git clone --depth 1 https://github.com/dense-analysis/ale.git ~/.vim/pack/git-plugins/start/ale
+
+- open vim and run :PluginInstall
+
+- install LSP Server:
+  if venv is not yet installed do sudo apt install python3.10-venv
+  open a python script in vim and run :LspInstallServer
+
+YouComplete (not needed if LSP server is used):
+-install YouComplete:
+ cd ~/.vim/bundle/YouCompleteMe
+ python3 install.py
 ```
 
 ### 2.2 Tmux 
