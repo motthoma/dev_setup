@@ -1,5 +1,11 @@
 set number
 set relativenumber  " relative numbers for other lines
+
+set tabstop=4 softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set mouse=a	              " allow mouse usage	
