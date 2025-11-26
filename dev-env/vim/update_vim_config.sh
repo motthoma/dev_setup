@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
-set -e  # Exit immediately on error
-set -u  # Treat unset variables as errors
+set -e
+set -u
+
+# ---------------------------------------------------------------------
+# 📌 Resolve script directory (absolute path)
+# ---------------------------------------------------------------------
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Path to the local .vimrc inside the repo
+VIMRC_SOURCE="$SCRIPT_DIR/.vimrc"
+VIMRC_TARGET="$HOME/.vimrc"
 
 # ---------------------------------------------------------------------
 # 🎯 1. Ensure Vim is installed (8.2+)
@@ -13,7 +22,6 @@ else
   echo "✅ Vim is already installed."
 fi
 
-# Check version
 VIM_VERSION=$(vim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+')
 if (( $(echo "$VIM_VERSION < 8.2" | bc -l) )); then
   echo "❌ Vim version $VIM_VERSION is too old. Please upgrade to 8.2 or newer."
@@ -24,9 +32,6 @@ echo "✅ Vim $VIM_VERSION detected."
 # ---------------------------------------------------------------------
 # 📁 2. Copy .vimrc to home (with backup)
 # ---------------------------------------------------------------------
-VIMRC_SOURCE="$HOME/workspace_thomas/dev_setup/dev-env/vim/.vimrc"
-VIMRC_TARGET="$HOME/.vimrc"
-
 if [ -f "$VIMRC_TARGET" ]; then
   echo "📦 Backing up existing .vimrc → ~/.vimrc.backup"
   cp -f "$VIMRC_TARGET" "$HOME/.vimrc.backup"
@@ -89,7 +94,7 @@ if ! dpkg -s python3.10-venv &>/dev/null && ! dpkg -s python3-venv &>/dev/null; 
 fi
 
 # ---------------------------------------------------------------------
-# 🌐 9. Ensure curl is installed (required for LSP installers)
+# 🌐 9. Ensure curl is installed
 # ---------------------------------------------------------------------
 echo "🔧 Ensuring curl is installed..."
 if ! command -v curl &> /dev/null; then
@@ -113,7 +118,8 @@ else
 fi
 
 # ---------------------------------------------------------------------
-# ✅ Done
+# 🎉 Done
 # ---------------------------------------------------------------------
 echo "🎉 Vim setup complete!"
-echo "💡 Tip: Now clangd works automatically — no need to run ':LspInstallServer' anymore!"
+echo "💡 Local .vimrc used from: $VIMRC_SOURCE"
+
