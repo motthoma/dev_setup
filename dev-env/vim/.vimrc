@@ -57,7 +57,9 @@ Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'majutsushi/tagbar'
 Plugin 'dense-analysis/ale'
-Plugin 'ctrlpvim/ctrlp.vim'
+# Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 
 
 " All of your Plugins must be added before the following line
