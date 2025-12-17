@@ -11,8 +11,11 @@ if ! command -v tmux &>/dev/null; then
   if [[ "$confirm" == "y" || "$confirm" == "yes" ]]; then
     echo "📦 Installing tmux..."
     if [[ -x "$(command -v apt-get)" ]]; then
-      sudo apt-get update -qq
-      sudo apt-get install -y tmux
+    sudo apt-get install -y tmux || {
+      echo "❌ tmux installation failed."
+      exit 1
+    }
+
     elif [[ -x "$(command -v dnf)" ]]; then
       sudo dnf install -y tmux
     elif [[ -x "$(command -v brew)" ]]; then
