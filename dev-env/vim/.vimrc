@@ -57,7 +57,7 @@ Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'majutsushi/tagbar'
 Plugin 'dense-analysis/ale'
-# Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
