@@ -12,42 +12,22 @@ VIMRC_SOURCE="$SCRIPT_DIR/.vimrc"
 VIMRC_TARGET="$HOME/.vimrc"
 
 # ---------------------------------------------------------------------
-# 🎯 1. Ensure Vim is installed (>= 9.2, auto-upgrade via PPA if needed)
+# 🎯 1. Ensure Vim is installed (8.2+)
 # ---------------------------------------------------------------------
-
-REQUIRED_VIM_VERSION="9.0"
-
-get_vim_version() {
-  vim --version 2>/dev/null | head -n1 | grep -oE '[0-9]+\.[0-9]+'
-}
-
-if ! command -v vim &>/dev/null; then
-  echo "⬇️ Vim not found — installing latest Vim via PPA..."
-  sudo add-apt-repository -y ppa:jonathonf/vim
+if ! command -v vim &> /dev/null; then
+  echo "⬇️ Vim not found — installing it..."
   sudo apt update
   sudo apt install -y vim
 else
-  CURRENT_VIM_VERSION="$(get_vim_version)"
-  echo "ℹ️  Detected Vim version: $CURRENT_VIM_VERSION"
-
-  if (( $(echo "$CURRENT_VIM_VERSION < $REQUIRED_VIM_VERSION" | bc -l) )); then
-    echo "⬆️  Vim version too old (requires ≥ $REQUIRED_VIM_VERSION)."
-    echo "🔄 Adding Vim PPA and upgrading Vim..."
-    sudo add-apt-repository -y ppa:jonathonf/vim
-    sudo apt update
-    sudo apt install -y vim
-
-    NEW_VIM_VERSION="$(get_vim_version)"
-    if (( $(echo "$NEW_VIM_VERSION < $REQUIRED_VIM_VERSION" | bc -l) )); then
-      echo "❌ Vim upgrade failed. Version $NEW_VIM_VERSION is still < $REQUIRED_VIM_VERSION."
-      exit 1
-    fi
-  else
-    echo "✅ Vim version is sufficient (≥ $REQUIRED_VIM_VERSION)."
-  fi
+  echo "✅ Vim is already installed."
 fi
 
-echo "✅ Vim $(get_vim_version) ready."
+VIM_VERSION=$(vim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+')
+if (( $(echo "$VIM_VERSION < 8.2" | bc -l) )); then
+  echo "❌ Vim version $VIM_VERSION is too old. Please upgrade to 8.2 or newer."
+  exit 1
+fi
+echo "✅ Vim $VIM_VERSION detected."
 
 # ---------------------------------------------------------------------
 # 📁 2. Copy .vimrc to home (with backup)
@@ -138,8 +118,18 @@ else
 fi
 
 # ---------------------------------------------------------------------
+# 📋 1b. Ensure Vim has clipboard support (vim-gtk3)
+# ---------------------------------------------------------------------
+if ! dpkg -s vim-gtk3 &>/dev/null; then
+  echo "📋 Installing vim-gtk3 (clipboard support)..."
+  sudo apt update
+  sudo apt install -y vim-gtk3
+else
+  echo "✅ vim-gtk3 is already installed."
+fi
+
+# ---------------------------------------------------------------------
 # 🎉 Done
 # ---------------------------------------------------------------------
 echo "🎉 Vim setup complete!"
 echo "💡 Local .vimrc used from: $VIMRC_SOURCE"
-
