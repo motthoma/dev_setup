@@ -7,9 +7,13 @@ set expandtab
 set smartindent
 
 set nocompatible              " be iMproved, required
-filetype off                  " required
+filetype plugin indent on    " required
 set mouse=a	              " allow mouse usage	
 set belloff=all               " surppresses error sounds
+
+" tell vim to use python3.11. This is latest python compatible with
+" YouComplete
+let g:python3_host_prog = '/usr/bin/python3.11'
 
 " automatically jump to last cursor position before  closing
 au BufReadPost * execute 'normal! g`"' 
@@ -57,16 +61,33 @@ Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'majutsushi/tagbar'
 Plugin 'dense-analysis/ale'
-" Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
-" Map CtrlP to Ctrl+P
-nnoremap <C-p> :CtrlP<CR>
+
+" Map CtrlP to :GFiles command of fzf plugin
+nnoremap <C-p> :GFiles<CR>
+
+let mapleader = " "
+nnoremap <leader><CR> :so ~/.vimrc
+nnoremap <leader>Y gg"+yG
+
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+
+" quickfix window
+augroup QuickfixMappings
+  autocmd!
+  autocmd FileType qf nnoremap <buffer> <C-j> :cnext<CR>
+  autocmd FileType qf nnoremap <buffer> <C-k> :cprev<CR>
+augroup END
+
+
+
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
