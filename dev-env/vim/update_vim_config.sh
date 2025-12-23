@@ -7,27 +7,37 @@ set -u
 # ---------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Path to the local .vimrc inside the repo
 VIMRC_SOURCE="$SCRIPT_DIR/.vimrc"
 VIMRC_TARGET="$HOME/.vimrc"
 
-# ---------------------------------------------------------------------
-# 🎯 1. Ensure Vim is installed (8.2+)
-# ---------------------------------------------------------------------
-if ! command -v vim &> /dev/null; then
-  echo "⬇️ Vim not found — installing it..."
-  sudo apt update
-  sudo apt install -y vim
-else
-  echo "✅ Vim is already installed."
-fi
+REQUIRED_VIM_VERSION="9.1"
 
-VIM_VERSION=$(vim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+')
-if (( $(echo "$VIM_VERSION < 8.2" | bc -l) )); then
-  echo "❌ Vim version $VIM_VERSION is too old. Please upgrade to 8.2 or newer."
-  exit 1
+# ---------------------------------------------------------------------
+# 🎯 1. Ensure Vim 9.1+ is installed
+# ---------------------------------------------------------------------
+install_vim_91() {
+  echo "⬇️ Installing / upgrading Vim to 9.1+ ..."
+  sudo apt update
+  sudo apt install -y software-properties-common
+  sudo add-apt-repository -y ppa:jonathonf/vim
+  sudo apt update
+  sudo apt install -y vim vim-gtk3
+}
+
+if ! command -v vim &>/dev/null; then
+  echo "❌ Vim not found."
+  install_vim_91
+else
+  VIM_VERSION_FULL=$(vim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+')
+  echo "🔍 Detected Vim $VIM_VERSION_FULL"
+
+  if dpkg --compare-versions "$VIM_VERSION_FULL" lt "$REQUIRED_VIM_VERSION"; then
+    echo "⚠️ Vim $VIM_VERSION_FULL is too old (need ≥ $REQUIRED_VIM_VERSION)"
+    install_vim_91
+  else
+    echo "✅ Vim $VIM_VERSION_FULL is sufficient."
+  fi
 fi
-echo "✅ Vim $VIM_VERSION detected."
 
 # ---------------------------------------------------------------------
 # 📁 2. Copy .vimrc to home (with backup)
@@ -52,21 +62,28 @@ else
 fi
 
 # ---------------------------------------------------------------------
-# 🧠 4. Install Exuberant Ctags (for Tagbar)
+# 🧠 4. Ensure Exuberant Ctags (for Tagbar)
 # ---------------------------------------------------------------------
-echo "📦 Installing Exuberant Ctags..."
-sudo apt update
-sudo apt install -y exuberant-ctags
+echo "🔎 Checking for ctags..."
+
+if ! command -v ctags &>/dev/null; then
+  echo "📦 ctags not found — installing Exuberant Ctags..."
+  sudo apt update
+  sudo apt install -y exuberant-ctags
+  echo "✅ Exuberant Ctags installed."
+else
+  echo "✅ ctags already installed."
+fi
 
 # ---------------------------------------------------------------------
-# 🧰 5. Install ALE (Asynchronous Lint Engine)
+# 🧰 5. Install ALE
 # ---------------------------------------------------------------------
 echo "🔍 Installing ALE..."
 mkdir -p "$HOME/.vim/pack/git-plugins/start"
 if [ ! -d "$HOME/.vim/pack/git-plugins/start/ale" ]; then
-  git clone --depth 1 https://github.com/dense-analysis/ale.git "$HOME/.vim/pack/git-plugins/start/ale"
+  git clone --depth 1 https://github.com/dense-analysis/ale.git \
+    "$HOME/.vim/pack/git-plugins/start/ale"
 else
-  echo "🔁 Updating ALE..."
   cd "$HOME/.vim/pack/git-plugins/start/ale" && git pull
 fi
 
@@ -77,59 +94,34 @@ echo "⚙️ Installing Vim plugins via Vundle..."
 vim +PluginInstall +qall
 
 # ---------------------------------------------------------------------
-# 🧩 7. (Optional) Install YouCompleteMe if present
+# 🧩 7. Install YouCompleteMe (Vim 9.1+ compatible)
 # ---------------------------------------------------------------------
 if [ -d "$HOME/.vim/bundle/YouCompleteMe" ]; then
   echo "🧠 Installing YouCompleteMe..."
   cd "$HOME/.vim/bundle/YouCompleteMe"
-  python3 install.py
+  python3 install.py --clangd-completer
 fi
 
 # ---------------------------------------------------------------------
-# 🐍 8. Ensure Python venv for LSP support
+# 🐍 8. Ensure Python venv
 # ---------------------------------------------------------------------
-if ! dpkg -s python3.10-venv &>/dev/null && ! dpkg -s python3-venv &>/dev/null; then
-  echo "📦 Installing Python venv..."
+if ! dpkg -s python3-venv &>/dev/null; then
   sudo apt install -y python3-venv
 fi
 
 # ---------------------------------------------------------------------
-# 🌐 9. Ensure curl is installed
+# 🌐 9. Ensure curl
 # ---------------------------------------------------------------------
-echo "🔧 Ensuring curl is installed..."
-if ! command -v curl &> /dev/null; then
-  sudo apt update
-  sudo apt install -y curl
-  echo "✅ curl installed."
-else
-  echo "✅ curl already installed."
-fi
+command -v curl &>/dev/null || sudo apt install -y curl
 
 # ---------------------------------------------------------------------
-# 🧩 10. Install clangd (C/C++ language server)
+# 🧩 10. Ensure clangd
 # ---------------------------------------------------------------------
-echo "🛠  Installing clangd (C/C++ LSP)..."
-if ! command -v clangd &> /dev/null; then
-  sudo apt update
-  sudo apt install -y clangd
-  echo "✅ clangd installed."
-else
-  echo "✅ clangd already installed."
-fi
-
-# ---------------------------------------------------------------------
-# 📋 1b. Ensure Vim has clipboard support (vim-gtk3)
-# ---------------------------------------------------------------------
-if ! dpkg -s vim-gtk3 &>/dev/null; then
-  echo "📋 Installing vim-gtk3 (clipboard support)..."
-  sudo apt update
-  sudo apt install -y vim-gtk3
-else
-  echo "✅ vim-gtk3 is already installed."
-fi
+command -v clangd &>/dev/null || sudo apt install -y clangd
 
 # ---------------------------------------------------------------------
 # 🎉 Done
 # ---------------------------------------------------------------------
-echo "🎉 Vim setup complete!"
-echo "💡 Local .vimrc used from: $VIMRC_SOURCE"
+echo "🎉 Vim 9.1+ setup complete!"
+vim --version | head -n 1
+
