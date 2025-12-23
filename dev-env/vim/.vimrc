@@ -93,6 +93,16 @@ Plugin 'junegunn/fzf.vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
+" add an indicator for Caps-Lock status in airline
+function! CapsLockStatus()
+  if system("xset q | grep Caps | awk '{print $4}'") =~? 'on'
+    return ' CAPS'
+  endif
+  return ''
+endfunction
+
+let g:airline_section_warning = airline#section#create_right(['%{CapsLockStatus()}'])
+
 " Map CtrlP to :GFiles command of fzf plugin
 nnoremap <C-p> :GFiles<CR>
 
