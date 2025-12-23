@@ -1,6 +1,9 @@
 set number
 set relativenumber  " relative numbers for other lines
 
+syntax on
+filetype plugin indent on
+
 set tabstop=4 softtabstop=4
 set shiftwidth=4
 set expandtab
@@ -11,9 +14,26 @@ filetype plugin indent on    " required
 set mouse=a	              " allow mouse usage	
 set belloff=all               " surppresses error sounds
 
-" tell vim to use python3.11. This is latest python compatible with
-" YouComplete
-let g:python3_host_prog = '/usr/bin/python3.11'
+
+
+" -------------------------
+" Detect Python 3.11 or newer
+" -------------------------
+let g:python3_host_prog = ''
+if executable('python3')
+    let pyver = system('python3 -c "import sys; print(f\"{sys.version_info.major}.{sys.version_info.minor}\")"')
+    let pyver = substitute(pyver, '\n', '', '')  " remove trailing newline
+
+    " Only use this python if >= 3.11
+    if pyver >=# '3.11'
+        let g:python3_host_prog = exepath('python3')
+        let g:has_py311 = 1
+    else
+        let g:has_py311 = 0
+    endif
+else
+    let g:has_py311 = 0
+endif
 
 " automatically jump to last cursor position before  closing
 au BufReadPost * execute 'normal! g`"' 
@@ -53,7 +73,12 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
-Plugin 'Valloric/YouCompleteMe'
+
+" Only install YouCompleteMe if Python >= 3.11 is found
+if g:has_py311
+    Plugin 'Valloric/YouCompleteMe'
+endif
+
 Plugin 'prabirshrestha/vim-lsp'
 Plugin 'mattn/vim-lsp-settings'
 Plugin 'prabirshrestha/asyncomplete.vim'
