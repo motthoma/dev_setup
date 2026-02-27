@@ -57,6 +57,15 @@ Ctrl + b    # (written as C-b)
 
 ---
 
+## ⚙️ Swap Tabs 
+| Action | Command |
+|--------|----------|
+| Swap current window with left | `C-b :swap-window -t -1` |
+| Swap current window with right | `C-b :swap-window -t +1` |
+| Swap window X with window Y | `C-b :swap-window -s <X> -t <Y>` |
+
+---
+
 ## ⚙️ Pane & Window Management
 | Action | Command |
 |--------|----------|
