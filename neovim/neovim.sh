@@ -4,22 +4,22 @@ set -e  # Exit on error
 # ---------------------------------------------------------------------
 # 🧱 1. Prepare directories
 # ---------------------------------------------------------------------
-mkdir -p "$HOME/dev-env"
-cd "$HOME/dev-env"
+mkdir -p "$HOME/workspace_thomas/dev_setup"
+cd "$HOME/workspace_thomas/dev_setup"
 
 # ---------------------------------------------------------------------
 # 🧩 2. Clone Neovim source (v0.11.0)
 # ---------------------------------------------------------------------
-if [ -d "$HOME/dev-env/neovim" ]; then
+if [ -d "$HOME/workspace_thomas/dev_setup/neovim" ]; then
   echo "🔁 Updating existing Neovim source..."
-  cd "$HOME/dev-env/neovim"
+  cd "$HOME/workspace_thomas/dev_setup/neovim"
   git fetch --tags
   git checkout v0.11.0
   git pull
 else
   echo "⬇️ Cloning Neovim..."
-  git clone -b v0.11.0 https://github.com/neovim/neovim.git "$HOME/dev-env/neovim"
-  cd "$HOME/dev-env/neovim"
+  git clone -b v0.11.0 https://github.com/neovim/neovim.git "$HOME/workspace_thomas/dev_setup/neovim"
+  cd "$HOME/workspace_thomas/dev_setup/neovim"
 fi
 
 # ---------------------------------------------------------------------
