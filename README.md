@@ -39,27 +39,37 @@ cd dev-setup/dev-env
 
 ### 2.1 Neovim
 
-Clone, build and install neovim release 0.11.0 by execution of the *neovim.sh* script: 
+#### Installation
+
+Install/Update Neovim (latest AppImage, min version 0.11.0) by executing the *install_nvim.sh* script:
 
 ```bash
 cd neovim
-chmod +x neovim.sh
-./neovim.sh
+chmod +x install_nvim.sh
+./install_nvim.sh
 ```
 
- or run it via Ansible playbook
+Or run it via Ansible playbook:
 
 ```bash
 ansible-playbook neovim_ansible.yml
 ```
 
-Update neovim setup via shell script to clone [neovim kickstart fork](https://github.com/motthoma/kickstart.nvim) that contains custom init.lua file:
+#### Configuration
+
+Setup the Neovim configuration by symlinking `~/.config/nvim` to the local `nvim` directory:
 
 ```bash
 cd neovim
-chmod +x update_nvim_config_from_kickstart.sh
-./update_nvim_config_from_kickstart.sh
+chmod +x setup_nvim_config.sh
+./setup_nvim_config.sh
 ```
+
+The configuration is based on [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) and includes:
+- **blink.cmp** for autocompletion (configured to accept the first suggestion with Enter).
+- **LSP** support for multiple languages.
+- **Telescope** for fuzzy finding.
+- **Treesitter** for better syntax highlighting.
 
 ### 2.2 Vim
 
