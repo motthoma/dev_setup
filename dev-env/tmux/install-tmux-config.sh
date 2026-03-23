@@ -36,7 +36,7 @@ fi
 
 # --- Paths ---
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TMUX_SRC="$REPO_DIR/.tmux.conf"
+TMUX_SRC="$REPO_DIR/tmux.conf"
 CONFIG_DIR="$HOME/.config/tmux"
 TARGET_CONF="$CONFIG_DIR/tmux.conf"
 
