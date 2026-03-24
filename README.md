@@ -1,12 +1,8 @@
 # Developer Environment Setup
 
-[![Frontend Masters](https://img.shields.io/badge/Frontend%20Masters-Developer%20Productivity%20v2-red?logo=frontendmasters&logoColor=white)](https://frontendmasters.com/courses/developer-productivity-v2/)
 [![Built with Bash](https://img.shields.io/badge/Bash-4.x-blue?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![Ansible](https://img.shields.io/badge/Ansible-Automation-black?logo=ansible&logoColor=white)](https://www.ansible.com/)
 [![License](https://img.shields.io/badge/License-Educational-lightgrey.svg)](#-license)
-
-> 🧠 A full developer environment setup inspired by  
-> [The Primeagen’s *Developer Productivity v2*](https://frontendmasters.com/courses/developer-productivity-v2/) course on Frontend Masters.
 
 ---
 
@@ -14,18 +10,13 @@
 
 This repository contains a collection of **environment setup scripts, configuration files, and course reference materials** designed to help developers become faster and more efficient in their day-to-day workflows.
 
-It is based on *The Primeagen’s* course on [Frontend Masters](https://frontendmasters.com/), which focuses on practical tools, terminal mastery, automation, and editor customization.
 
 ###  Includes setups for:
 -  **Neovim**  
 -  **Vim**  
 -  **Tmux**  
 
----
-
-> ⚠️ The `course_material/` directory is **for educational reference only**, derived from The Primeagen’s *Developer Productivity v2* course.
-
----
+It is based on *The Primeagen’s* course on [Frontend Masters](https://frontendmasters.com/), which focuses on practical tools, terminal mastery, automation, and editor customization.
 
 ## 🚀 Getting Started
 
