@@ -1,77 +1,122 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-# === CONFIG ===
-NVIM_MIN_VERSION="0.11.0"
+# =========================
+# CONFIG
+# =========================
+NVIM_MIN_VERSION="0.10.0"
 NVIM_APPIMAGE_URL="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage"
-NVIM_BIN="/usr/local/bin/nvim"
 
-# === FUNCTIONS ===
+INSTALL_PATH="/usr/local/bin/nvim"
+
+# =========================
+# HELPERS
+# =========================
+
+log() {
+  echo -e "\n→ $1"
+}
+
+warn() {
+  echo -e "\n⚠ $1"
+}
+
+die() {
+  echo -e "\n❌ $1"
+  exit 1
+}
+
 version_ge() {
   [ "$(printf '%s\n' "$1" "$2" | sort -V | tail -n1)" = "$1" ]
 }
 
 get_nvim_version() {
-  nvim --version 2>/dev/null | head -n1 | awk '{print $2}' | sed 's/^v//'
+  nvim --version 2>/dev/null | head -n1 | grep -oE 'v?[0-9]+\.[0-9]+\.[0-9]+' | sed 's/^v//' || true
 }
 
-remove_existing_nvim() {
-  echo "→ Removing existing Neovim installations..."
+detect_all_nvims() {
+  log "Checking existing Neovim binaries..."
+  which -a nvim 2>/dev/null || true
+}
 
-  # Remove apt version if present
-  if dpkg -l | grep -q neovim; then
-    echo "  - Removing apt Neovim"
+remove_conflicts() {
+  log "Removing conflicting Neovim installations..."
+
+  # apt version
+  if dpkg -l 2>/dev/null | grep -q neovim; then
     sudo apt remove -y neovim
   fi
 
-  # Remove snap version if present
-  if command -v snap >/dev/null && snap list | grep -q nvim; then
-    echo "  - Removing snap Neovim"
-    sudo snap remove nvim
+  # snap version
+  if command -v snap >/dev/null 2>&1 && snap list 2>/dev/null | grep -q nvim; then
+    sudo snap remove nvim || true
   fi
 
-  # Remove existing binary if present
-  if [ -f "$NVIM_BIN" ]; then
-    echo "  - Removing existing $NVIM_BIN"
-    sudo rm -f "$NVIM_BIN"
+  # old manual binary
+  if [ -f "$INSTALL_PATH" ]; then
+    sudo rm -f "$INSTALL_PATH"
   fi
 }
 
-install_nvim_appimage() {
-  echo "→ Downloading latest Neovim AppImage..."
+install_appimage() {
+  log "Downloading latest Neovim AppImage..."
+
   TMP_APPIMAGE="/tmp/nvim.appimage"
 
-  curl -L -o "$TMP_APPIMAGE" "$NVIM_APPIMAGE_URL"
-  chmod u+x "$TMP_APPIMAGE"
+  curl -fL -o "$TMP_APPIMAGE" "$NVIM_APPIMAGE_URL" \
+    || die "Download failed"
 
-  echo "→ Installing to $NVIM_BIN"
-  sudo mv "$TMP_APPIMAGE" "$NVIM_BIN"
-  sudo chmod +x "$NVIM_BIN"
+  chmod +x "$TMP_APPIMAGE"
+
+  log "Installing to $INSTALL_PATH"
+
+  sudo mv "$TMP_APPIMAGE" "$INSTALL_PATH"
+  sudo chmod +x "$INSTALL_PATH"
 }
 
-# === MAIN ===
-if command -v nvim >/dev/null 2>&1; then
-  CURRENT_PATH=$(command -v nvim)
-  NVIM_CURRENT_VERSION=$(get_nvim_version)
+verify_install() {
+  log "Verifying installation..."
 
-  echo "→ Found Neovim at $CURRENT_PATH (version $NVIM_CURRENT_VERSION)"
-
-  if version_ge "$NVIM_CURRENT_VERSION" "$NVIM_MIN_VERSION"; then
-    echo "✅ Neovim is up to date."
-    exit 0
-  else
-    echo "⚠ Version too old → performing clean reinstall..."
-    remove_existing_nvim
-    install_nvim_appimage
+  if ! command -v nvim >/dev/null 2>&1; then
+    die "nvim not found in PATH after install"
   fi
-else
-  echo "⚠ Neovim not found → installing..."
-  install_nvim_appimage
+
+  NVIM_VER="$(get_nvim_version)"
+
+  if [ -z "$NVIM_VER" ]; then
+    warn "Could not detect Neovim version"
+  else
+    echo "→ Installed version: $NVIM_VER"
+  fi
+
+  echo "→ Binary: $(command -v nvim)"
+}
+
+# =========================
+# MAIN
+# =========================
+
+log "Neovim installer starting..."
+
+detect_all_nvims
+
+CURRENT_VER="$(get_nvim_version)"
+
+if [ -n "$CURRENT_VER" ]; then
+  echo "→ Current version: $CURRENT_VER"
 fi
 
-echo "✅ Neovim installation/update complete!"
+if [ -n "$CURRENT_VER" ] && version_ge "$CURRENT_VER" "$NVIM_MIN_VERSION"; then
+  echo "✅ Neovim already up-to-date"
+  exit 0
+fi
 
-hash -r 2>/dev/null || true
+warn "Installing/upgrading Neovim..."
 
-echo "→ Installed version: $(nvim --version | head -n1)"
-echo "→ Binary path: $(command -v nvim)"
+remove_conflicts
+install_appimage
+verify_install
+
+log "DONE"
+echo "👉 Run: hash -r (or restart terminal)"
+echo "👉 Then: nvim --version"
