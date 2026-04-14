@@ -1,3 +1,5 @@
+vim.print("INIT LOADED SUCCESSFULLY")
+vim.print("STEP 1 OK")
 --[[
 
 =====================================================================
@@ -269,6 +271,7 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
+vim.print("STEP 2 OK")
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -1096,6 +1099,6 @@ require('lazy').setup({
     },
   },
 })
-
+vim.print("STEP 3  OK")
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2
