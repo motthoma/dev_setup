@@ -2,7 +2,7 @@
 
 [![Built with Bash](https://img.shields.io/badge/Bash-4.x-blue?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![Ansible](https://img.shields.io/badge/Ansible-Automation-black?logo=ansible&logoColor=white)](https://www.ansible.com/)
-[![License](https://img.shields.io/badge/License-Educational-lightgrey.svg)](#-license)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](#-license)
 
 ---
 
@@ -15,6 +15,8 @@ This repository contains a collection of **environment setup scripts, configurat
 -  **Neovim**  
 -  **Vim**  
 -  **Tmux**  
+-  **GitHub Copilot** (Vim & Neovim plugin)
+-  **Dotfiles** (`github .gitconfig`)
 
 It is based on *The Primeagen’s* course on [Frontend Masters](https://frontendmasters.com/), which focuses on practical tools, terminal mastery, automation, and editor customization.
 
@@ -122,7 +124,59 @@ The *update_vim_config.sh* installs the plugins according to the following instr
  python3 install.py
 ```
 
-### 2.2 Tmux 
+### 2.3 GitHub Copilot Plugin
+
+#### Vim
+
+Install using Vim's native package system (no vimrc changes needed):
+
+```bash
+mkdir -p ~/.vim/pack/github/start
+curl -fsSL https://github.com/github/copilot.vim/archive/refs/heads/release.tar.gz \
+  | tar -xz -C ~/.vim/pack/github/start/
+mv ~/.vim/pack/github/start/copilot.vim-release ~/.vim/pack/github/start/copilot.vim
+```
+
+Then open Vim and run `:Copilot setup`.
+
+#### Neovim (lazy.nvim / kickstart.nvim)
+
+Create `~/.config/nvim/lua/custom/plugins/copilot.lua`:
+
+```lua
+return {
+  {
+    'github/copilot.vim',
+    lazy = false,
+    init = function()
+      -- Remove or replace the line below if not using GitHub Enterprise
+      vim.g.copilot_enterprise_uri = 'https://YOUR_DOMAIN.ghe.com'
+    end,
+  },
+}
+```
+
+Uncomment the custom plugins import in `init.lua` (~line 1072):
+
+```lua
+{ import = 'custom.plugins' },
+```
+
+Then in Neovim run `:Lazy sync` and `:Copilot setup`.
+
+---
+
+### 2.4 Dotfiles (`github_copilot_dot_files`)
+
+The `github_copilot_dot_files` directory contains a `.gitconfig` with user, editor, and credential settings. Copy it to your home directory to apply:
+
+```bash
+cp github_copilot_dot_files/.gitconfig ~/.gitconfig
+```
+
+---
+
+### 2.3 Tmux 
 
 Run tmux install config as shell script to install tmux and create symlink to *.tmux.conf*:
 
