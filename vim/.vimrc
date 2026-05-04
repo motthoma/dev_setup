@@ -17,6 +17,12 @@ set belloff=all               " surppresses error sounds
 
 
 " -------------------------
+" use github enterprise account 
+" -------------------------
+let g:copilot_enterprise_uri = 'https://liebherr.ghe.com'
+
+
+" -------------------------
 " Detect Python 3.11 or newer
 " -------------------------
 let g:python3_host_prog = ''
