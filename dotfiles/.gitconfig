@@ -1,0 +1,14 @@
+[user]
+	email = thomas.motz@liebherr.com
+	name = legmot0
+
+[core]
+	editor = vim
+[diff]
+	tool = vimdiff
+[init]
+	defaultBranch = main
+[credential]
+	helper = store
+[http]
+	version = HTTP/1.1
