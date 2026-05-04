@@ -1,5 +1,3 @@
-vim.print("INIT LOADED SUCCESSFULLY")
-vim.print("STEP 1 OK")
 --[[
 
 =====================================================================
@@ -271,7 +269,6 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
-vim.print("STEP 2 OK")
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -1072,7 +1069,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1099,6 +1096,5 @@ require('lazy').setup({
     },
   },
 })
-vim.print("STEP 3  OK")
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2
