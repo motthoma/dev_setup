@@ -228,17 +228,22 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
--- Toggle alphabetical sorting
 local sorted_by_name = false
-function ToggleSymbolsSorting()
+
+function ToggleOutlineSorting()
   sorted_by_name = not sorted_by_name
-  require('symbols-outline').setup { sorting = sorted_by_name and 'name' or 'position' }
+
+  require("outline").setup({
+    symbols = {
+      sort = sorted_by_name and "alphabetical" or "position",
+    },
+  })
 end
 
-vim.api.nvim_set_keymap('n', '<C-s>', [[<cmd>lua ToggleSymbolsSorting()<CR>]], { noremap = true, silent = true })
+vim.keymap.set('n', '<C-s>', ToggleOutlineSorting, { noremap = true, silent = true })
 
 -- Optional: Map a key to toggle the symbols outline
-vim.api.nvim_set_keymap('n', '<F8>', [[<cmd>SymbolsOutline<CR>]], { noremap = true, silent = true })
+vim.keymap.set('n', '<F8>', '<cmd>Outline<CR>', { noremap = true, silent = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -319,25 +324,28 @@ require('lazy').setup({
     },
   },
 
-  -- Outline plugin. See simrat39/symbols-outline.nvim
   {
-    'simrat39/symbols-outline.nvim',
-    cmd = 'SymbolsOutline', -- lazy-load only when using the command
+    "hedyhli/outline.nvim",
+    cmd = { "Outline", "OutlineOpen" },
     config = function()
-      require('symbols-outline').setup {
-        highlight_hovered_item = true,
-        show_guides = true,
-        auto_preview = true,
-        position = 'right',
-        width = 30,
-        show_numbers = false,
-        show_relative_numbers = false,
-        show_symbol_details = false,
-        auto_close = false,
-      }
+      require("outline").setup({
+        symbols = {
+          filter = {
+            default = {
+              "Class",
+              "Function",
+              "Method",
+            },
+          },
+          sort = "position",
+        },
+        outline_window = {
+          width = 30,
+          position = "right",
+        },
+      })
     end,
   },
-
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -1096,5 +1104,6 @@ require('lazy').setup({
     },
   },
 })
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2
