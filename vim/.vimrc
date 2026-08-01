@@ -1,3 +1,5 @@
+let g:copilot_enabled = 0
+
 set number
 set relativenumber  " relative numbers for other lines
 
