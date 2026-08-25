@@ -94,6 +94,9 @@ vim.opt.packpath:append(vim.fn.expand '~/.local/share/nvim/site')
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Disable GitHub Copilot by default (consistent with vim/.vimrc)
+vim.g.copilot_enabled = 0
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
