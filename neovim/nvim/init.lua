@@ -100,6 +100,20 @@ vim.g.copilot_enabled = 0
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
+-- Restore last cursor position when reopening files (like Vim's g`" behavior)
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lnum = mark[1]
+    local col = mark[2]
+    local last_line = vim.api.nvim_buf_line_count(0)
+    if lnum > 0 and lnum <= last_line then
+      -- pcall in case window/cursor operations fail in special buffers
+      pcall(vim.api.nvim_win_set_cursor, 0, {lnum, col})
+    end
+  end,
+})
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
