@@ -30,7 +30,7 @@ Prompts examples (use these as templates)
 
 Repo notes (observed)
 - Main areas: `neovim/`, `vim/`, `tmux/`, `dotfiles/` and Ansible playbooks.
-- Neovim config is kickstart/lazy.nvim-style; copilot integration is documented and copilot is disabled by default in .vimrc in this repo.
+- Neovim config is kickstart/lazy.nvim-style; the primary init.lua is at `neovim/nvim/init.lua`. Copilot integration is documented and Copilot is disabled by default in .vimrc in this repo.
 
 If unsure
 - Prefer suggestions as diffs or small patches and include explicit commands to test them locally.
