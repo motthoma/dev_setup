@@ -109,7 +109,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     local last_line = vim.api.nvim_buf_line_count(0)
     if lnum > 0 and lnum <= last_line then
       -- pcall in case window/cursor operations fail in special buffers
-      pcall(vim.api.nvim_win_set_cursor, 0, {lnum, col})
+      pcall(vim.api.nvim_win_set_cursor, 0, { lnum, col })
     end
   end,
 })
@@ -250,11 +250,11 @@ local sorted_by_name = false
 function ToggleOutlineSorting()
   sorted_by_name = not sorted_by_name
 
-  require("outline").setup({
+  require('outline').setup {
     symbols = {
-      sort = sorted_by_name and "alphabetical" or "position",
+      sort = sorted_by_name and 'alphabetical' or 'position',
     },
-  })
+  }
 end
 
 vim.keymap.set('n', '<C-s>', ToggleOutlineSorting, { noremap = true, silent = true })
@@ -342,25 +342,25 @@ require('lazy').setup({
   },
 
   {
-    "hedyhli/outline.nvim",
-    cmd = { "Outline", "OutlineOpen" },
+    'hedyhli/outline.nvim',
+    cmd = { 'Outline', 'OutlineOpen' },
     config = function()
-      require("outline").setup({
+      require('outline').setup {
         symbols = {
           filter = {
             default = {
-              "Class",
-              "Function",
-              "Method",
+              'Class',
+              'Function',
+              'Method',
             },
           },
-          sort = "position",
+          sort = 'position',
         },
         outline_window = {
           width = 30,
-          position = "right",
+          position = 'right',
         },
-      })
+      }
     end,
   },
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
