@@ -16,6 +16,8 @@ filetype plugin indent on    " required
 set mouse=a	              " allow mouse usage	
 set belloff=all               " surppresses error sounds
 
+set scrolloff=5 "leave always 5 lines above and below cursor visible
+
 
 
 " -------------------------
